@@ -23,12 +23,12 @@ namespace running_social
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class BasicPage3 : Page
+    public sealed partial class PlanRunPage : Page
     {
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public BasicPage3()
+        public PlanRunPage()
         {
             this.InitializeComponent();
 
@@ -107,5 +107,15 @@ namespace running_social
         }
 
         #endregion
+
+        private void AppBarButton_Click_Home(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(MainPage));
+        }
+
+        private void AppBarButton_Click_Settings(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingsPage));
+        }
     }
 }

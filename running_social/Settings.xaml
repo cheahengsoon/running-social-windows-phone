@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="running_social.BasicPage2"
+    x:Class="running_social.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:running_social"
@@ -9,11 +9,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Icon="Home" Label="home"/>
+            <AppBarButton Icon="Home" Label="home" Click="AppBarButton_Click_Home"/>
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Pivot>
+    <Pivot x:Name="SettingsRoot">
         <PivotItem Header="options">
             <StackPanel>
                 <TextBlock Text="Units" Style="{ThemeResource SubheaderTextBlockStyle}" />

@@ -85,11 +85,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentRunPage.xaml.cs">
+      <DependentUpon>CurrentRunPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlanRun.xaml.cs">
       <DependentUpon>PlanRun.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CurrentRun.xaml.cs">
-      <DependentUpon>CurrentRun.xaml</DependentUpon>
     </Compile>
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
@@ -121,11 +121,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="PlanRun.xaml">
+    <Page Include="CurrentRunPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CurrentRun.xaml">
+    <Page Include="PlanRun.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

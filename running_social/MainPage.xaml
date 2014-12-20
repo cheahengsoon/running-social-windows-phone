@@ -9,21 +9,21 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
         <CommandBar x:Name="CommandBar_Main">
-            <AppBarButton Icon="Add" Label="plan run"/>
-            <AppBarButton Icon="Clock" Label="run now"/>
-            <AppBarButton Icon="Find" Label="search"/>
+            <AppBarButton Icon="Add" Label="plan run" Click="AppBarButton_Click_Plan_Run"/>
+            <AppBarButton Icon="Clock" Label="run now" Click="AppBarButton_Click_Run_Now"/>
+            <AppBarButton Icon="Find" Label="search" Click="AppBarButton_Click_Search" />
             
             <CommandBar.SecondaryCommands>
-                <AppBarButton Label="settings" />
+                <AppBarButton Label="settings" Click="AppBarButton_Click_Settings" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 
     <Pivot>
-        <PivotItem x:Name="Pivot_Social" Content="Social" FontSize="48">
+        <PivotItem x:Name="Pivot_Social" Header="Social" FontSize="48">
             
         </PivotItem>
-        <PivotItem x:Name="Pivot_Recent" Content="Recent" FontSize="48">
+        <PivotItem x:Name="Pivot_Recent" Header="Recent" FontSize="48">
             
         </PivotItem>
     </Pivot>

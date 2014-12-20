@@ -44,5 +44,25 @@ namespace running_social
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
         }
+
+        private void AppBarButton_Click_Plan_Run(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(PlanRunPage));
+        }
+
+        private void AppBarButton_Click_Run_Now(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(CurrentRunPage));
+        }
+
+        private void AppBarButton_Click_Search(object sender, RoutedEventArgs e)
+        {
+            // TODO
+        }
+
+        private void AppBarButton_Click_Settings(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SettingsPage));
+        }
     }
 }
