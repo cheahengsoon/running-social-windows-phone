@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="running_social.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:running_social"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.BottomAppBar>
+        <CommandBar x:Name="CommandBar_Main">
+            <AppBarButton Icon="Add" Label="plan run"/>
+            <AppBarButton Icon="Clock" Label="run now"/>
+            <AppBarButton Icon="Find" Label="search"/>
+            
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="settings" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Pivot>
+        <PivotItem x:Name="Pivot_Social" Content="Social" FontSize="48">
+            
+        </PivotItem>
+        <PivotItem x:Name="Pivot_Recent" Content="Recent" FontSize="48">
+            
+        </PivotItem>
+    </Pivot>
+    
+    
+</Page>
