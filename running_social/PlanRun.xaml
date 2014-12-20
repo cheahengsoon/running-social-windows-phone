@@ -38,27 +38,36 @@
         <!-- Content -->
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <StackPanel>
-                <TextBlock Text="Time" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                <ComboBox Margin="0,0,0,15" Background="White" Foreground="Black">
-                    <ComboBoxItem Content="5 minutes" />
-                    <ComboBoxItem Content="10 minutes" />
-                    <ComboBoxItem Content="15 minutes" />
-                    <ComboBoxItem Content="20 minutes" />
-                    <ComboBoxItem Content="25 minutes" />
-                    <ComboBoxItem Content="30 minutes" />
-                    <ComboBoxItem Content="35 minutes" />
-                    <ComboBoxItem Content="40 minutes" />
-                    <ComboBoxItem Content="45 minutes" />
-                    <ComboBoxItem Content="50 minutes" />
-                    <ComboBoxItem Content="55 minutes" />
-                    <ComboBoxItem Content="60 minutes" />
+                <TextBlock Text="Start Run" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                <ComboBox Margin="0,0,0,15" SelectedIndex="0">
+                    <ComboBoxItem Content="5 min" />
+                    <ComboBoxItem Content="10 min" />
+                    <ComboBoxItem Content="15 min" />
+                    <ComboBoxItem Content="20 min" />
+                    <ComboBoxItem Content="25 min" />
+                    <ComboBoxItem Content="30 min" />
+                    <ComboBoxItem Content="35 min" />
+                    <ComboBoxItem Content="40 min" />
+                    <ComboBoxItem Content="45 min" />
+                    <ComboBoxItem Content="50 min" />
+                    <ComboBoxItem Content="55 min" />
+                    <ComboBoxItem Content="60 min" />
                 </ComboBox>
                 
                 <TextBlock Text="Location" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                <ComboBox x:Name="LocationPicker" Margin="0,0,0,15" Background="White" Foreground="Black">
+                <ComboBox x:Name="LocationPicker" Visibility="Collapsed">
                 </ComboBox>
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" Content="Add New" />
+                    <Button Grid.Column="1" Margin="15,0,0,0" Content="Find In Area" />
+                </Grid>
 
-                <Button Content="Upload" Background="{ThemeResource PhoneAccentBrush}" Padding="15,15,15,15" HorizontalAlignment="Stretch" />
+                <TextBlock Text="Upload" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                <Button Content="Continue" Background="{ThemeResource PhoneAccentBrush}" Padding="15,15,15,15" HorizontalAlignment="Stretch" />
             </StackPanel>
         </Grid>
     </Grid>

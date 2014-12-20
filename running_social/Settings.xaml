@@ -17,7 +17,7 @@
         <PivotItem Header="options">
             <StackPanel>
                 <TextBlock Text="Units" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                <ComboBox Background="White" Foreground="Black">
+                <ComboBox SelectedIndex="0">
                     <ComboBoxItem Content="miles" />
                     <ComboBoxItem Content="kilometers" />
                 </ComboBox>
