@@ -30,6 +30,11 @@ namespace running_social.Resources
         /// To remember if this object has already been subscribed to updates.
         /// </summary>
         private bool subscribedToUpdates = false;
+        /// <summary>
+        /// The subscription generated from SubscribeToUpdate().
+        /// Stored so that events can be unsubscribed from.
+        /// </summary>
+        private TypedEventHandler<Geolocator, PositionChangedEventArgs> subscription = null;
 
         /// <summary>
         /// Use <see cref="GetGeolocator"/>
@@ -39,8 +44,8 @@ namespace running_social.Resources
             try
             {
                 myGeolocator.DesiredAccuracyInMeters = 5;
-                myGeolocator.MovementThreshold = 5;
-                myGeolocator.ReportInterval = coordinatesInterval*1000;
+                myGeolocator.MovementThreshold = 0.1;
+                myGeolocator.ReportInterval = coordinatesInterval*1000/1000;
             }
             catch (Exception ex)
             {
@@ -49,12 +54,19 @@ namespace running_social.Resources
             }
         }
 
+        public async void StopSubscription()
+        {
+            myGeolocator.PositionChanged -= subscription;
+            subscription = null;
+        }
+
         public async void SubscribeToUpdates()
         {
             string exceptionMsg = "";
             try
             {
-                instance.myGeolocator.PositionChanged += new TypedEventHandler<Geolocator, PositionChangedEventArgs>(OnLocationChanged);                
+                subscription = new TypedEventHandler<Geolocator, PositionChangedEventArgs>(OnLocationChanged);
+                myGeolocator.PositionChanged += subscription;
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -80,7 +92,6 @@ namespace running_social.Resources
         /// <param name="args">Arguments created by the geolocator, including the geopoint</param>
         public static void OnLocationChanged(Geolocator loc, PositionChangedEventArgs args)
         {
-            Geocoordinates instance = Geocoordinates.GetGeolocator();
             instance.locationsList.Add(
                 new Tuple<DateTime, Geopoint>( new DateTime(), args.Position.Coordinate.Point ));
             Debug.WriteLine(instance.locationsList.Count);

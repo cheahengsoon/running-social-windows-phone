@@ -1,7 +1,9 @@
 ﻿using running_social.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -9,10 +11,13 @@ using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.Phone.Notification.Management;
+using Windows.UI;
 using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -27,10 +32,25 @@ namespace running_social
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CurrentRunPage : Page
+    public sealed partial class CurrentRunPage : Page, INotifyPropertyChanged
     {
+        private List<Button> buttons = new List<Button>();
+
+        private enum rstatus
+        {
+            started,
+            starting,
+            paused,
+            pausing,
+            stopped,
+            stopping
+        };
+
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private rstatus runStatus = rstatus.stopped;
+        public event PropertyChangedEventHandler PropertyChanged;
+        private Visibility _visibilityOption;
 
         public CurrentRunPage()
         {
@@ -39,7 +59,15 @@ namespace running_social
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-            Geocoordinates.GetGeolocator().SubscribeToUpdates();
+
+            buttons.Add(PlayButton11);
+            buttons.Add(PlayButton21);
+            buttons.Add(PlayButton12);
+            buttons.Add(PlayButton22);
+            buttons.Add(PauseButton11);
+            buttons.Add(PauseButton21);
+            buttons.Add(StopButton11);
+            buttons.Add(StopButton21);
         }
 
         /// <summary>
@@ -112,6 +140,133 @@ namespace running_social
         }
 
         #endregion
+
+        // This method is called by the Set accessor of each property.
+        // parameter causes the property name of the caller to be substituted as an argument.
+        private void NotifyPropertyChanged(String propertyName = "")
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        private void DisableAll()
+        {
+            foreach (var button in buttons)
+            {
+                button.IsEnabled = false;
+            }
+        }
+
+        private void ShowActive()
+        {
+            if (runStatus == rstatus.started)
+            {
+                PauseButton11.IsEnabled = true;
+                PauseButton21.IsEnabled = true;
+                PauseButton11.Visibility = Visibility.Visible;
+                PauseButton21.Visibility = Visibility.Visible;
+            }
+            if (runStatus == rstatus.paused)
+            {
+                PlayButton12.IsEnabled = true;
+                PlayButton22.IsEnabled = true;
+                StopButton11.IsEnabled = true;
+                StopButton21.IsEnabled = true;
+                PlayStopGrid1.Visibility = Visibility.Visible;
+                PlayStopGrid2.Visibility = Visibility.Visible;
+            }
+            if (runStatus == rstatus.stopped)
+            {
+                PlayButton11.IsEnabled = true;
+                PlayButton21.IsEnabled = true;
+                PlayButton11.Visibility = Visibility.Visible;
+                PlayButton21.Visibility = Visibility.Visible;
+            }
+            NotifyPropertyChanged();
+        }
+
+        private void CollapseAll()
+        {
+            PauseButton11.Visibility = Visibility.Collapsed;
+            PauseButton21.Visibility = Visibility.Collapsed;
+            PlayStopGrid1.Visibility = Visibility.Collapsed;
+            PlayStopGrid2.Visibility = Visibility.Collapsed;
+            PlayButton11.Visibility = Visibility.Collapsed;
+            PlayButton21.Visibility = Visibility.Collapsed;
+            NotifyPropertyChanged();
+        }
+
+        public void PlayButton_Click(object sender, RoutedEventArgs e)
+        {
+            DisableAll();
+            runStatus = rstatus.starting;
+            Start_Run();
+        }
+
+        public bool Start_Run()
+        {
+            if (runStatus != rstatus.started &&
+                runStatus != rstatus.stopped)
+            {
+                return false;
+            }
+
+            Geocoordinates.GetGeolocator().SubscribeToUpdates();
+
+            runStatus = rstatus.started;
+            CollapseAll();
+            ShowActive();
+
+            return true;
+        }
+
+        public void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            DisableAll();
+            runStatus = rstatus.pausing;
+            Pause_Run();
+        }
+
+        public bool Pause_Run()
+        {
+            if (runStatus != rstatus.started)
+            {
+                return false;
+            }
+
+            Geocoordinates.GetGeolocator().StopSubscription();
+
+            runStatus = rstatus.paused;
+            CollapseAll();
+            ShowActive();
+
+            return true;
+        }
+
+        public void StopButton_Click(object sender, RoutedEventArgs e)
+        {
+            DisableAll();
+            runStatus = rstatus.stopping;
+            Stop_Run();
+        }
+
+        public bool Stop_Run()
+        {
+            if (runStatus != rstatus.paused)
+            {
+                return false;
+            }
+
+            Geocoordinates.GetGeolocator().StopSubscription();
+
+            runStatus = rstatus.stopped;
+            CollapseAll();
+            ShowActive();
+
+            return true;
+        }
 
         private void AppBarButton_Click_Settings(object sender, RoutedEventArgs e)
         {

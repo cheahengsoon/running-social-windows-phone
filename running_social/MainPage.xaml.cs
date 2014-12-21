@@ -64,5 +64,9 @@ namespace running_social
         {
             Frame.Navigate(typeof(SettingsPage));
         }
+        private void AppBarButton_Click_Change_Account(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(SignupPage));
+        }
     }
 }

@@ -15,11 +15,12 @@
             
             <CommandBar.SecondaryCommands>
                 <AppBarButton Label="settings" Click="AppBarButton_Click_Settings" />
+                <AppBarButton Label="change account" Click="AppBarButton_Click_Change_Account" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Pivot>
+    <Pivot Title="Running Social">
         <PivotItem x:Name="Pivot_Social" Header="Social" FontSize="48">
             
         </PivotItem>

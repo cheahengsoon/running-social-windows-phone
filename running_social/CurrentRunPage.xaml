@@ -60,9 +60,58 @@
 
                 <!-- Pause/Resume Buttons -->
                 <Grid Grid.Row="2">
-                    <Button Grid.Column="0" Background="{ThemeResource PhoneAccentBrush}" Padding="15,15,15,15" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,-99,0,-1">
-                        <!-- <Image /> -->
+                    <Button
+                    x:Name="PlayButton11"
+                    Background="{ThemeResource PhoneAccentBrush}"
+                    Padding="15,15,15,15"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Click="PlayButton_Click"
+                    Height="99" >
+                        <Image Source="Assets/Play.png" />
                     </Button>
+                    <Button
+                    x:Name="PauseButton11"
+                    Background="{ThemeResource PhoneAccentBrush}"
+                    Padding="15,15,15,15"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Click="PauseButton_Click"
+                    Visibility="Collapsed"
+                    Height="99" >
+                        <Image Source="Assets/Pause.png" />
+                    </Button>
+                    <Grid x:Name="PlayStopGrid1" Visibility="Collapsed">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button
+                        x:Name="PlayButton12"
+                        Grid.Column="0"
+                        Background="{ThemeResource PhoneAccentBrush}"
+                        Padding="15,15,15,15"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Margin="0,0,5,0"
+                        Click="PlayButton_Click"
+                        Height="99" >
+                            <Image Source="Assets/Play.png" />
+                        </Button>
+                        <Button
+                        x:Name="StopButton11"
+                        Grid.Column="1"
+                        Background="Red"
+                        Padding="15,15,15,15"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Margin="5,0,0,0"
+                        Click="StopButton_Click"
+                        Height="99" >
+                            <Image Source="Assets/Stop.png" />
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
         </PivotItem>
@@ -75,13 +124,57 @@
                     Height="345" />
 
                 <Button
+                    x:Name="PlayButton21"
                     Background="{ThemeResource PhoneAccentBrush}"
                     Padding="15,15,15,15"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
+                    Click="PlayButton_Click"
                     Height="99" >
-                    <!-- <Image /> -->
+                    <Image Source="Assets/Play.png" />
                 </Button>
+                <Button
+                    x:Name="PauseButton21"
+                    Background="{ThemeResource PhoneAccentBrush}"
+                    Padding="15,15,15,15"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Click="PauseButton_Click"
+                    Visibility="Collapsed"
+                    Height="99" >
+                    <Image Source="Assets/Pause.png" />
+                </Button>
+                <Grid x:Name="PlayStopGrid2" Visibility="Collapsed">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        x:Name="PlayButton22"
+                        Grid.Column="0"
+                        Background="{ThemeResource PhoneAccentBrush}"
+                        Padding="15,15,15,15"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Margin="0,0,5,0"
+                        Click="PlayButton_Click"
+                        Height="99" >
+                        <Image Source="Assets/Play.png" />
+                    </Button>
+                    <Button
+                        x:Name="StopButton21"
+                        Grid.Column="1"
+                        Background="Red"
+                        Padding="15,15,15,15"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Margin="5,0,0,0"
+                        Click="StopButton_Click"
+                        Height="99" >
+                        <Image Source="Assets/Stop.png" />
+                    </Button>
+                </Grid>
             </StackPanel>
         </PivotItem>
 

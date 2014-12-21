@@ -13,7 +13,7 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Pivot x:Name="SettingsRoot">
+    <Pivot x:Name="SettingsRoot" Title="Settings">
         <PivotItem Header="options">
             <StackPanel>
                 <TextBlock Text="Units" Style="{ThemeResource SubheaderTextBlockStyle}" />
@@ -26,8 +26,21 @@
         
         <PivotItem Header="my profile">
             <StackPanel>
-                <TextBlock Text="Profile Picture" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                <Rectangle Width="70" Height="70" HorizontalAlignment="Left" Margin="10,10,10,10" Stroke="{ThemeResource PhoneAccentBrush}" RadiusX="35" RadiusY="35" StrokeThickness="2" />
                 <!--<Image />-->
+                <Button Content="Change Picture" Margin="0,0,0,15" />
+
+                <TextBlock Text="Last Week" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                <TextBlock Text="3 runs" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Text="Average distance: 2.5 mi" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Text="Average time: 30 min" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Text="Average time/mi: 1.25 mi/hr" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,15" />
+
+                <TextBlock Text="Last Month" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                <TextBlock Text="7 runs" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Text="Average distance: 2.0 mi" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Text="Average time: 30 min" Style="{ThemeResource BodyTextBlockStyle}" />
+                <TextBlock Text="Average time/mi: 1.0 mi/hr" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,15" />
             </StackPanel>
         </PivotItem>
         
