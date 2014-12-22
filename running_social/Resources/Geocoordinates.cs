@@ -16,25 +16,34 @@ namespace running_social.Resources
     /// </summary>
     class Geocoordinates
     {
-        private Geolocator myGeolocator = new Geolocator();
-        public List<Tuple<DateTime, Geopoint>> locationsList = new List<Tuple<DateTime, Geopoint>>();
+        private Geolocator _myGeolocator = new Geolocator();
+        /// <summary>
+        /// List of sublists of locations points and times.
+        /// Each sublist represents a time period from when "play" was pushed until "pause" was pushed.
+        /// </summary>
+        public List<List<Tuple<DateTime, Geopoint>>> LocationsSetsList =
+            new List<List<Tuple<DateTime, Geopoint>>>();
+        /// <summary>
+        /// Quick reference to the the current sublist of LocationsSetsList.
+        /// </summary>
+        public List<Tuple<DateTime, Geopoint>> LocationsList = null;
         /// <summary>
         /// The singleton object.
         /// </summary>
-        private static Geocoordinates instance = null;
+        private static Geocoordinates _instance = null;
         /// <summary>
         /// The interval between calculating a new geolocation coordinate, in seconds.
         /// </summary>
-        public uint coordinatesInterval = 5;
+        public uint CoordinatesInterval = 5;
         /// <summary>
         /// To remember if this object has already been subscribed to updates.
         /// </summary>
-        private bool subscribedToUpdates = false;
+        private bool _subscribedToUpdates = false;
         /// <summary>
         /// The subscription generated from SubscribeToUpdate().
         /// Stored so that events can be unsubscribed from.
         /// </summary>
-        private TypedEventHandler<Geolocator, PositionChangedEventArgs> subscription = null;
+        private TypedEventHandler<Geolocator, PositionChangedEventArgs> _subscription = null;
 
         /// <summary>
         /// Use <see cref="GetGeolocator"/>
@@ -43,9 +52,9 @@ namespace running_social.Resources
         {
             try
             {
-                myGeolocator.DesiredAccuracyInMeters = 5;
-                myGeolocator.MovementThreshold = 0.1;
-                myGeolocator.ReportInterval = coordinatesInterval*1000/1000;
+                _myGeolocator.DesiredAccuracyInMeters = 5;
+                _myGeolocator.MovementThreshold = 5;
+                _myGeolocator.ReportInterval = CoordinatesInterval*1000;
             }
             catch (Exception ex)
             {
@@ -56,17 +65,28 @@ namespace running_social.Resources
 
         public async void StopSubscription()
         {
-            myGeolocator.PositionChanged -= subscription;
-            subscription = null;
+            if (_subscription == null)
+            {
+                return;
+            }
+            _myGeolocator.PositionChanged -= _subscription;
+            _subscription = null;
         }
 
         public async void SubscribeToUpdates()
         {
+            // check that there isn't currently a subscription
+            if (_subscription != null)
+            {
+                return;
+            }
+
+            // subscribe to geolocation updates
             string exceptionMsg = "";
             try
             {
-                subscription = new TypedEventHandler<Geolocator, PositionChangedEventArgs>(OnLocationChanged);
-                myGeolocator.PositionChanged += subscription;
+                _subscription = new TypedEventHandler<Geolocator, PositionChangedEventArgs>(OnLocationChanged);
+                _myGeolocator.PositionChanged += _subscription;
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -86,15 +106,15 @@ namespace running_social.Resources
 
         /// <summary>
         /// Gathers a new geopoint and datetime to add to the list of geopoints.
-        /// <see cref="coordinatesInterval"/>
+        /// <see cref="CoordinatesInterval"/>
         /// </summary>
         /// <param name="loc">The geolocator</param>
         /// <param name="args">Arguments created by the geolocator, including the geopoint</param>
         public static void OnLocationChanged(Geolocator loc, PositionChangedEventArgs args)
         {
-            instance.locationsList.Add(
+            _instance.LocationsList.Add(
                 new Tuple<DateTime, Geopoint>( new DateTime(), args.Position.Coordinate.Point ));
-            Debug.WriteLine(instance.locationsList.Count);
+            Debug.WriteLine(_instance.LocationsList.Count);
         }
 
         /// <summary>
@@ -103,11 +123,11 @@ namespace running_social.Resources
         /// <returns>The Geocoordinates singleton object.</returns>
         public static Geocoordinates GetGeolocator()
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = new Geocoordinates();
+                _instance = new Geocoordinates();
             }
-            return instance;
+            return _instance;
         }
 
         /// <summary>
@@ -117,14 +137,14 @@ namespace running_social.Resources
         /// <returns>The closest datetime/geopoint pair.</returns>
         public Tuple<DateTime, Geopoint> GetCoordinatePair(DateTime dt)
         {
-            if (locationsList.Count == 0)
+            if (LocationsList.Count == 0)
             {
                 CalculateSingeCoordinate();
             }
 
-            Tuple<DateTime, Geopoint> closestPair = locationsList[0];
+            Tuple<DateTime, Geopoint> closestPair = LocationsList[0];
             int closestDiff = Math.Abs((int) (closestPair.Item1 - dt).TotalSeconds);
-            foreach (var pair in locationsList)
+            foreach (var pair in LocationsList)
             {
                 int diff = Math.Abs( (int)(pair.Item1 - dt).TotalSeconds );
                 if (diff < closestDiff)
@@ -137,6 +157,25 @@ namespace running_social.Resources
         }
 
         /// <summary>
+        /// Used to start a new list every time "play" is pushed after "pause".
+        /// </summary>
+        public void StartNewLocationsList()
+        {
+            LocationsSetsList.Add(new List<Tuple<DateTime, Geopoint>>());
+            LocationsList = LocationsSetsList[LocationsSetsList.Count - 1];
+        }
+
+        /// <summary>
+        /// Used to start a new set of lists every time "play" is pushed after "stop"
+        /// or the first time "play" is pushed.
+        /// </summary>
+        public void StartNewLocationsSetList()
+        {
+            LocationsSetsList = new List<List<Tuple<DateTime, Geopoint>>>();
+            StartNewLocationsList();
+        }
+
+        /// <summary>
         /// Calculate the next datetime/geopoint pair and add it to locationsList
         /// From http://msdn.microsoft.com/en-us/library/windows/apps/jj244363(v=vs.105).aspx
         /// </summary>
@@ -146,8 +185,8 @@ namespace running_social.Resources
             string exceptionMsg = "";
             try
             {
-                Geoposition myGeoPosition = await myGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-                locationsList.Add(
+                Geoposition myGeoPosition = await _myGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
+                LocationsList.Add(
                     new Tuple<DateTime, Geopoint>(new DateTime(), myGeoPosition.Coordinate.Point));
             }
             catch (UnauthorizedAccessException ex)

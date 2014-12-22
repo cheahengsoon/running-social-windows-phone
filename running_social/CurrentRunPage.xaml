@@ -4,7 +4,7 @@
     xmlns:local="using:running_social"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    xmlns:maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="running_social.CurrentRunPage"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -30,7 +30,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Content -->
+                <!-- Tracking Information -->
                 <StackPanel Grid.Row="1" x:Name="ContentRoot">
                     <TextBlock Text="Location" Style="{ThemeResource SubheaderTextBlockStyle}" />
                     <TextBlock Text="Trailhead 1" Margin="0,0,0,15" Style="{ThemeResource BodyTextBlockStyle}" />
@@ -61,24 +61,24 @@
                 <!-- Pause/Resume Buttons -->
                 <Grid Grid.Row="2">
                     <Button
-                    x:Name="PlayButton11"
-                    Background="{ThemeResource PhoneAccentBrush}"
-                    Padding="15,15,15,15"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Click="PlayButton_Click"
-                    Height="99" >
+                        x:Name="PlayButton11"
+                        Background="{ThemeResource PhoneAccentBrush}"
+                        Padding="15,15,15,15"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Click="PlayButton_Click"
+                        Height="99" >
                         <Image Source="Assets/Play.png" />
                     </Button>
                     <Button
-                    x:Name="PauseButton11"
-                    Background="{ThemeResource PhoneAccentBrush}"
-                    Padding="15,15,15,15"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Click="PauseButton_Click"
-                    Visibility="Collapsed"
-                    Height="99" >
+                        x:Name="PauseButton11"
+                        Background="{ThemeResource PhoneAccentBrush}"
+                        Padding="15,15,15,15"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Click="PauseButton_Click"
+                        Visibility="Collapsed"
+                        Height="99" >
                         <Image Source="Assets/Pause.png" />
                     </Button>
                     <Grid x:Name="PlayStopGrid1" Visibility="Collapsed">
@@ -88,27 +88,27 @@
                         </Grid.ColumnDefinitions>
 
                         <Button
-                        x:Name="PlayButton12"
-                        Grid.Column="0"
-                        Background="{ThemeResource PhoneAccentBrush}"
-                        Padding="15,15,15,15"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        Margin="0,0,5,0"
-                        Click="PlayButton_Click"
-                        Height="99" >
+                            x:Name="PlayButton12"
+                            Grid.Column="0"
+                            Background="{ThemeResource PhoneAccentBrush}"
+                            Padding="15,15,15,15"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Margin="0,0,5,0"
+                            Click="PlayButton_Click"
+                            Height="99" >
                             <Image Source="Assets/Play.png" />
                         </Button>
                         <Button
-                        x:Name="StopButton11"
-                        Grid.Column="1"
-                        Background="Red"
-                        Padding="15,15,15,15"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        Margin="5,0,0,0"
-                        Click="StopButton_Click"
-                        Height="99" >
+                            x:Name="StopButton11"
+                            Grid.Column="1"
+                            Background="Red"
+                            Padding="15,15,15,15"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            Margin="5,0,0,0"
+                            Click="StopButton_Click"
+                            Height="99" >
                             <Image Source="Assets/Stop.png" />
                         </Button>
                     </Grid>
@@ -118,7 +118,7 @@
 
         <PivotItem Header="map">
             <StackPanel>
-                <Maps:MapControl
+                <maps:MapControl
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
                     Height="345" />

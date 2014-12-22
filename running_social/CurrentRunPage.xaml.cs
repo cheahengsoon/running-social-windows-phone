@@ -32,23 +32,18 @@ namespace running_social
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class CurrentRunPage : Page, INotifyPropertyChanged
+    public sealed partial class CurrentRunPage : Page
     {
-        private List<Button> buttons = new List<Button>();
-
-        private enum rstatus
+        private enum Rstatus
         {
-            started,
-            starting,
-            paused,
-            pausing,
-            stopped,
-            stopping
+            Started,
+            Paused,
+            Stopped,
         };
 
-        private NavigationHelper navigationHelper;
-        private ObservableDictionary defaultViewModel = new ObservableDictionary();
-        private rstatus runStatus = rstatus.stopped;
+        private NavigationHelper _navigationHelper;
+        private ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private Rstatus _runStatus = Rstatus.Stopped;
         public event PropertyChangedEventHandler PropertyChanged;
         private Visibility _visibilityOption;
 
@@ -56,18 +51,9 @@ namespace running_social
         {
             this.InitializeComponent();
 
-            this.navigationHelper = new NavigationHelper(this);
-            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            buttons.Add(PlayButton11);
-            buttons.Add(PlayButton21);
-            buttons.Add(PlayButton12);
-            buttons.Add(PlayButton22);
-            buttons.Add(PauseButton11);
-            buttons.Add(PauseButton21);
-            buttons.Add(StopButton11);
-            buttons.Add(StopButton21);
+            this._navigationHelper = new NavigationHelper(this);
+            this._navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this._navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
         /// <summary>
@@ -75,7 +61,7 @@ namespace running_social
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get { return this.navigationHelper; }
+            get { return this._navigationHelper; }
         }
 
         /// <summary>
@@ -84,7 +70,7 @@ namespace running_social
         /// </summary>
         public ObservableDictionary DefaultViewModel
         {
-            get { return this.defaultViewModel; }
+            get { return this._defaultViewModel; }
         }
 
         /// <summary>
@@ -131,60 +117,33 @@ namespace running_social
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedTo(e);
+            this._navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            this.navigationHelper.OnNavigatedFrom(e);
+            this._navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
 
-        // This method is called by the Set accessor of each property.
-        // parameter causes the property name of the caller to be substituted as an argument.
-        private void NotifyPropertyChanged(String propertyName = "")
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        private void DisableAll()
-        {
-            foreach (var button in buttons)
-            {
-                button.IsEnabled = false;
-            }
-        }
-
         private void ShowActive()
         {
-            if (runStatus == rstatus.started)
+            if (_runStatus == Rstatus.Started)
             {
-                PauseButton11.IsEnabled = true;
-                PauseButton21.IsEnabled = true;
                 PauseButton11.Visibility = Visibility.Visible;
                 PauseButton21.Visibility = Visibility.Visible;
             }
-            if (runStatus == rstatus.paused)
+            if (_runStatus == Rstatus.Paused)
             {
-                PlayButton12.IsEnabled = true;
-                PlayButton22.IsEnabled = true;
-                StopButton11.IsEnabled = true;
-                StopButton21.IsEnabled = true;
                 PlayStopGrid1.Visibility = Visibility.Visible;
                 PlayStopGrid2.Visibility = Visibility.Visible;
             }
-            if (runStatus == rstatus.stopped)
+            if (_runStatus == Rstatus.Stopped)
             {
-                PlayButton11.IsEnabled = true;
-                PlayButton21.IsEnabled = true;
                 PlayButton11.Visibility = Visibility.Visible;
                 PlayButton21.Visibility = Visibility.Visible;
             }
-            NotifyPropertyChanged();
         }
 
         private void CollapseAll()
@@ -195,27 +154,34 @@ namespace running_social
             PlayStopGrid2.Visibility = Visibility.Collapsed;
             PlayButton11.Visibility = Visibility.Collapsed;
             PlayButton21.Visibility = Visibility.Collapsed;
-            NotifyPropertyChanged();
         }
 
         public void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            DisableAll();
-            runStatus = rstatus.starting;
             Start_Run();
         }
 
         public bool Start_Run()
         {
-            if (runStatus != rstatus.started &&
-                runStatus != rstatus.stopped)
+            if (_runStatus != Rstatus.Paused &&
+                _runStatus != Rstatus.Stopped)
             {
                 return false;
             }
 
-            Geocoordinates.GetGeolocator().SubscribeToUpdates();
+            // subscribe to gps updates
+            Geocoordinates geolocator = Geocoordinates.GetGeolocator();
+            if (_runStatus == Rstatus.Paused)
+            {
+                geolocator.StartNewLocationsList();
+            }
+            else // _runStatus == Rstatus.Stopped
+            {
+                geolocator.StartNewLocationsSetList();
+            }
+            geolocator.SubscribeToUpdates();
 
-            runStatus = rstatus.started;
+            _runStatus = Rstatus.Started;
             CollapseAll();
             ShowActive();
 
@@ -224,21 +190,19 @@ namespace running_social
 
         public void PauseButton_Click(object sender, RoutedEventArgs e)
         {
-            DisableAll();
-            runStatus = rstatus.pausing;
             Pause_Run();
         }
 
         public bool Pause_Run()
         {
-            if (runStatus != rstatus.started)
+            if (_runStatus != Rstatus.Started)
             {
                 return false;
             }
 
             Geocoordinates.GetGeolocator().StopSubscription();
 
-            runStatus = rstatus.paused;
+            _runStatus = Rstatus.Paused;
             CollapseAll();
             ShowActive();
 
@@ -247,21 +211,19 @@ namespace running_social
 
         public void StopButton_Click(object sender, RoutedEventArgs e)
         {
-            DisableAll();
-            runStatus = rstatus.stopping;
             Stop_Run();
         }
 
         public bool Stop_Run()
         {
-            if (runStatus != rstatus.paused)
+            if (_runStatus != Rstatus.Paused)
             {
                 return false;
             }
 
             Geocoordinates.GetGeolocator().StopSubscription();
 
-            runStatus = rstatus.stopped;
+            _runStatus = Rstatus.Stopped;
             CollapseAll();
             ShowActive();
 

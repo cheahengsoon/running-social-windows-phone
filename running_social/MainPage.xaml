@@ -8,7 +8,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
-        <CommandBar x:Name="CommandBar_Main">
+        <CommandBar x:Name="CommandBarMain">
             <AppBarButton Icon="Add" Label="plan run" Click="AppBarButton_Click_Plan_Run"/>
             <AppBarButton Icon="Clock" Label="run now" Click="AppBarButton_Click_Run_Now"/>
             <AppBarButton Icon="Find" Label="search" Click="AppBarButton_Click_Search" />
@@ -21,10 +21,10 @@
     </Page.BottomAppBar>
 
     <Pivot Title="Running Social">
-        <PivotItem x:Name="Pivot_Social" Header="Social" FontSize="48">
+        <PivotItem x:Name="PivotSocial" Header="Social" FontSize="48">
             
         </PivotItem>
-        <PivotItem x:Name="Pivot_Recent" Header="Recent" FontSize="48">
+        <PivotItem x:Name="PivotRecent" Header="Recent" FontSize="48">
             
         </PivotItem>
     </Pivot>

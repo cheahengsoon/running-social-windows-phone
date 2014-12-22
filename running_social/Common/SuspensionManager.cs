@@ -24,7 +24,7 @@ namespace running_social.Common
     {
         private static Dictionary<string, object> _sessionState = new Dictionary<string, object>();
         private static List<Type> _knownTypes = new List<Type>();
-        private const string sessionStateFilename = "_sessionState.xml";
+        private const string SessionStateFilename = "_sessionState.xml";
 
         /// <summary>
         /// Provides access to global session state for the current session.  This state is
@@ -76,7 +76,7 @@ namespace running_social.Common
                 serializer.WriteObject(sessionData, _sessionState);
 
                 // Get an output stream for the SessionState file and write the state asynchronously
-                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(sessionStateFilename, CreationCollisionOption.ReplaceExisting);
+                StorageFile file = await ApplicationData.Current.LocalFolder.CreateFileAsync(SessionStateFilename, CreationCollisionOption.ReplaceExisting);
                 using (Stream fileStream = await file.OpenStreamForWriteAsync())
                 {
                     sessionData.Seek(0, SeekOrigin.Begin);
@@ -107,7 +107,7 @@ namespace running_social.Common
             try
             {
                 // Get the input stream for the SessionState file
-                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(sessionStateFilename);
+                StorageFile file = await ApplicationData.Current.LocalFolder.GetFileAsync(SessionStateFilename);
                 using (IInputStream inStream = await file.OpenSequentialReadAsync())
                 {
                     // Deserialize the Session State
@@ -119,9 +119,9 @@ namespace running_social.Common
                 foreach (var weakFrameReference in _registeredFrames)
                 {
                     Frame frame;
-                    if (weakFrameReference.TryGetTarget(out frame) && (string)frame.GetValue(FrameSessionBaseKeyProperty) == sessionBaseKey)
+                    if (weakFrameReference.TryGetTarget(out frame) && (string)frame.GetValue(_frameSessionBaseKeyProperty) == sessionBaseKey)
                     {
-                        frame.ClearValue(FrameSessionStateProperty);
+                        frame.ClearValue(_frameSessionStateProperty);
                         RestoreFrameNavigationState(frame);
                     }
                 }
@@ -132,11 +132,11 @@ namespace running_social.Common
             }
         }
 
-        private static DependencyProperty FrameSessionStateKeyProperty =
+        private static DependencyProperty _frameSessionStateKeyProperty =
             DependencyProperty.RegisterAttached("_FrameSessionStateKey", typeof(String), typeof(SuspensionManager), null);
-        private static DependencyProperty FrameSessionBaseKeyProperty =
+        private static DependencyProperty _frameSessionBaseKeyProperty =
             DependencyProperty.RegisterAttached("_FrameSessionBaseKeyParams", typeof(String), typeof(SuspensionManager), null);
-        private static DependencyProperty FrameSessionStateProperty =
+        private static DependencyProperty _frameSessionStateProperty =
             DependencyProperty.RegisterAttached("_FrameSessionState", typeof(Dictionary<String, Object>), typeof(SuspensionManager), null);
         private static List<WeakReference<Frame>> _registeredFrames = new List<WeakReference<Frame>>();
 
@@ -156,25 +156,25 @@ namespace running_social.Common
         /// This can be used to distinguish between multiple application launch scenarios.</param>
         public static void RegisterFrame(Frame frame, String sessionStateKey, String sessionBaseKey = null)
         {
-            if (frame.GetValue(FrameSessionStateKeyProperty) != null)
+            if (frame.GetValue(_frameSessionStateKeyProperty) != null)
             {
                 throw new InvalidOperationException("Frames can only be registered to one session state key");
             }
 
-            if (frame.GetValue(FrameSessionStateProperty) != null)
+            if (frame.GetValue(_frameSessionStateProperty) != null)
             {
                 throw new InvalidOperationException("Frames must be either be registered before accessing frame session state, or not registered at all");
             }
 
             if (!string.IsNullOrEmpty(sessionBaseKey))
             {
-                frame.SetValue(FrameSessionBaseKeyProperty, sessionBaseKey);
+                frame.SetValue(_frameSessionBaseKeyProperty, sessionBaseKey);
                 sessionStateKey = sessionBaseKey + "_" + sessionStateKey;
             }
 
             // Use a dependency property to associate the session key with a frame, and keep a list of frames whose
             // navigation state should be managed
-            frame.SetValue(FrameSessionStateKeyProperty, sessionStateKey);
+            frame.SetValue(_frameSessionStateKeyProperty, sessionStateKey);
             _registeredFrames.Add(new WeakReference<Frame>(frame));
 
             // Check to see if navigation state can be restored
@@ -192,7 +192,7 @@ namespace running_social.Common
         {
             // Remove session state and remove the frame from the list of frames whose navigation
             // state will be saved (along with any weak references that are no longer reachable)
-            SessionState.Remove((String)frame.GetValue(FrameSessionStateKeyProperty));
+            SessionState.Remove((String)frame.GetValue(_frameSessionStateKeyProperty));
             _registeredFrames.RemoveAll((weakFrameReference) =>
             {
                 Frame testFrame;
@@ -215,11 +215,11 @@ namespace running_social.Common
         /// <see cref="SessionState"/>.</returns>
         public static Dictionary<String, Object> SessionStateForFrame(Frame frame)
         {
-            var frameState = (Dictionary<String, Object>)frame.GetValue(FrameSessionStateProperty);
+            var frameState = (Dictionary<String, Object>)frame.GetValue(_frameSessionStateProperty);
 
             if (frameState == null)
             {
-                var frameSessionKey = (String)frame.GetValue(FrameSessionStateKeyProperty);
+                var frameSessionKey = (String)frame.GetValue(_frameSessionStateKeyProperty);
                 if (frameSessionKey != null)
                 {
                     // Registered frames reflect the corresponding session state
@@ -234,7 +234,7 @@ namespace running_social.Common
                     // Frames that aren't registered have transient state
                     frameState = new Dictionary<String, Object>();
                 }
-                frame.SetValue(FrameSessionStateProperty, frameState);
+                frame.SetValue(_frameSessionStateProperty, frameState);
             }
             return frameState;
         }
