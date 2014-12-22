@@ -1,0 +1,58 @@
+﻿<Page
+    x:Class="running_social.UserProfile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:running_social"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Icon="AddFriend" Label="add friend" Click="AppBarButton_Click_Add_Friend"/>
+        </CommandBar>
+    </Page.BottomAppBar>
+
+    <Grid x:Name="LayoutRoot">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title Panel -->
+        <StackPanel Grid.Row="0" Margin="19,0,0,0">
+            <TextBlock Text="User Profile" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0"/>
+            <TextBlock Text="[username]" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
+        </StackPanel>
+
+        <!-- User Profile -->
+        <ScrollViewer Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
+        <StackPanel>
+            <Rectangle Width="70" Height="70" HorizontalAlignment="Left" Margin="10,10,10,10" Stroke="{ThemeResource PhoneAccentBrush}" RadiusX="35" RadiusY="35" StrokeThickness="2" />
+            <!--<Image />-->
+
+            <TextBlock Text="Last Week" Style="{ThemeResource SubheaderTextBlockStyle}" />
+            <TextBlock Text="3 runs" Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBlock Text="Average distance: 2.5 mi" Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBlock Text="Average time: 30 min" Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBlock Text="Average time/mi: 1.25 mi/hr" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,15" />
+
+            <TextBlock Text="Last Month" Style="{ThemeResource SubheaderTextBlockStyle}" />
+            <TextBlock Text="7 runs" Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBlock Text="Average distance: 2.0 mi" Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBlock Text="Average time: 30 min" Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBlock Text="Average time/mi: 1.0 mi/hr" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,15" />
+            
+            <TextBlock Text="All Runs" Style="{ThemeResource SubheaderTextBlockStyle}" />
+            <Button Content="Load" />
+        </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

@@ -10,37 +10,89 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Home" Label="home" Click="AppBarButton_Click_Home"/>
+            <AppBarButton Icon="View" x:Name="ViewProfileButton" Label="home" Click="AppBarButton_View_Profile" Visibility="Collapsed" />
         </CommandBar>
     </Page.BottomAppBar>
 
     <Pivot x:Name="SettingsRoot" Title="Settings">
         <PivotItem Header="options">
-            <StackPanel>
-                <TextBlock Text="Units" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                <ComboBox SelectedIndex="0">
-                    <ComboBoxItem Content="miles" />
-                    <ComboBoxItem Content="kilometers" />
-                </ComboBox>
-            </StackPanel>
+            <ScrollViewer>
+                <StackPanel>
+                    <TextBlock Text="Units" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                    <ComboBox SelectedIndex="0" Margin="0,0,0,15">
+                        <ComboBoxItem Content="miles" />
+                        <ComboBoxItem Content="kilometers" />
+                    </ComboBox>
+                
+                    <TextBlock Text="Notifications" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                    <TextBlock Text="When planning a run, notify:" Style="{ThemeResource BodyTextBlockStyle}" />
+                    <ComboBox SelectedIndex="0" Margin="0,0,0,15">
+                        <ComboBoxItem Content="Everyone" />
+                        <ComboBoxItem Content="Friends" />
+                    </ComboBox>
+
+                    <TextBlock Text="Block Notifications" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Sun" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="12,-10,0,-10" />
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Mon" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="1" Margin="12,-10,0,-10" />
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Tue" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="2" Margin="12,-10,0,-10" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Wed" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="3" Margin="12,-10,0,-10" />
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="Thu" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="4" Margin="12,-10,0,-10" />
+                        <TextBlock Grid.Row="0" Grid.Column="5" Text="Fri" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="5" Margin="12,-10,0,-10" />
+                        <TextBlock Grid.Row="0" Grid.Column="6" Text="Sat" Style="{ThemeResource BodyTextBlockStyle}" HorizontalAlignment="Center" />
+                        <CheckBox Grid.Row="1" Grid.Column="6" Margin="12,-10,0,-10" />
+                    </Grid>
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TimePicker Grid.Column="0" Time="22:0:0" />
+                        <TextBlock Grid.Column="1" Text="to" Margin="10,0,10,0" Style="{ThemeResource BodyTextBlockStyle}" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <TimePicker Grid.Column="2" Time="6:0:0" />
+                    </Grid>
+
+                    <TextBlock Text="Search Radius" Style="{ThemeResource SubheaderTextBlockStyle}" />
+                    <ComboBox SelectedIndex="2">
+                        <ComboBoxItem Content="5 mi" />
+                        <ComboBoxItem Content="10 mi" />
+                        <ComboBoxItem Content="15 mi" />
+                        <ComboBoxItem Content="20 mi" />
+                        <ComboBoxItem Content="30 mi" />
+                        <ComboBoxItem Content="50 mi" />
+                    </ComboBox>
+                </StackPanel>
+            </ScrollViewer>
         </PivotItem>
         
         <PivotItem Header="my profile">
             <StackPanel>
-                <Rectangle Width="70" Height="70" HorizontalAlignment="Left" Margin="10,10,10,10" Stroke="{ThemeResource PhoneAccentBrush}" RadiusX="35" RadiusY="35" StrokeThickness="2" />
+                <Rectangle Grid.Column="0" Width="70" Height="70" Margin="10,10,10,10" HorizontalAlignment="Left" Stroke="{ThemeResource PhoneAccentBrush}" RadiusX="35" RadiusY="35" StrokeThickness="2" />
                 <!--<Image />-->
                 <Button Content="Change Picture" Margin="0,0,0,15" />
 
-                <TextBlock Text="Last Week" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                <TextBlock Text="3 runs" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Text="Average distance: 2.5 mi" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Text="Average time: 30 min" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Text="Average time/mi: 1.25 mi/hr" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,15" />
-
-                <TextBlock Text="Last Month" Style="{ThemeResource SubheaderTextBlockStyle}" />
-                <TextBlock Text="7 runs" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Text="Average distance: 2.0 mi" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Text="Average time: 30 min" Style="{ThemeResource BodyTextBlockStyle}" />
-                <TextBlock Text="Average time/mi: 1.0 mi/hr" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,0,0,15" />
+                <ToggleSwitch Header="Show Picture" IsOn="True"  />
+                <ToggleSwitch Header="Share Statistics" IsOn="True"  />
             </StackPanel>
         </PivotItem>
         

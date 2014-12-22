@@ -14,6 +14,7 @@
             <AppBarButton Icon="Find" Label="search" Click="AppBarButton_Click_Search" />
             
             <CommandBar.SecondaryCommands>
+                <AppBarButton Label="friends list" Click="AppBarButton_Click_Friends_List" />
                 <AppBarButton Label="settings" Click="AppBarButton_Click_Settings" />
                 <AppBarButton Label="change account" Click="AppBarButton_Click_Change_Account" />
             </CommandBar.SecondaryCommands>
@@ -21,11 +22,10 @@
     </Page.BottomAppBar>
 
     <Pivot Title="Running Social">
-        <PivotItem x:Name="PivotSocial" Header="Social" FontSize="48">
-            
+        <PivotItem Header="Upcoming" FontSize="48">
         </PivotItem>
-        <PivotItem x:Name="PivotRecent" Header="Recent" FontSize="48">
-            
+
+        <PivotItem Header="Recent" FontSize="48">
         </PivotItem>
     </Pivot>
     

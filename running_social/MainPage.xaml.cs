@@ -68,5 +68,10 @@ namespace running_social
         {
             Frame.Navigate(typeof(SignupPage));
         }
+
+        private void AppBarButton_Click_Friends_List(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(FriendsPage));
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using running_social.Common;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -24,34 +23,18 @@ namespace running_social
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class SettingsPage : Page
+    public sealed partial class FriendsPage : Page
     {
-        private NavigationHelper _navigationHelper;
-        private ObservableDictionary _defaultViewModel = new ObservableDictionary();
+        private NavigationHelper navigationHelper;
+        private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public SettingsPage()
+        public FriendsPage()
         {
             this.InitializeComponent();
 
-            this._navigationHelper = new NavigationHelper(this);
-            this._navigationHelper.LoadState += this.NavigationHelper_LoadState;
-            this._navigationHelper.SaveState += this.NavigationHelper_SaveState;
-
-            SettingsRoot.SelectionChanged += SettingsRootOnSelectionChanged;
-        }
-
-        private void SettingsRootOnSelectionChanged(object sender, SelectionChangedEventArgs args)
-        {
-            PivotItem pivotItem = (PivotItem)args.AddedItems[0];
-            String pivotItemName = pivotItem.Header.ToString();
-            if (pivotItemName == "my profile")
-            {
-                ViewProfileButton.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                ViewProfileButton.Visibility = Visibility.Collapsed;                
-            }
+            this.navigationHelper = new NavigationHelper(this);
+            this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
+            this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
         }
 
         /// <summary>
@@ -59,7 +42,7 @@ namespace running_social
         /// </summary>
         public NavigationHelper NavigationHelper
         {
-            get { return this._navigationHelper; }
+            get { return this.navigationHelper; }
         }
 
         /// <summary>
@@ -68,7 +51,7 @@ namespace running_social
         /// </summary>
         public ObservableDictionary DefaultViewModel
         {
-            get { return this._defaultViewModel; }
+            get { return this.defaultViewModel; }
         }
 
         /// <summary>
@@ -115,24 +98,19 @@ namespace running_social
         /// handlers that cannot cancel the navigation request.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this._navigationHelper.OnNavigatedTo(e);
+            this.navigationHelper.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
-            this._navigationHelper.OnNavigatedFrom(e);
+            this.navigationHelper.OnNavigatedFrom(e);
         }
 
         #endregion
 
         private void AppBarButton_Click_Home(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(MainPage));
-        }
-
-        private void AppBarButton_View_Profile(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(UserProfile));
+            Frame.Navigate(typeof (MainPage));
         }
     }
 }
