@@ -112,5 +112,10 @@ namespace running_social
         {
             Frame.Navigate(typeof (MainPage));
         }
+
+        private void AppBarButton_Click_Search(object sender, RoutedEventArgs e)
+        {
+            // todo
+        }
     }
 }

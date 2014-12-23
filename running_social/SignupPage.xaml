@@ -27,7 +27,7 @@
             <TextBlock Text="Sign In" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
 
-        <!--TODO: Content should be placed within the following grid-->
+        <!-- The Registration Page -->
         <StackPanel Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <TextBlock Text="Username" Style="{ThemeResource SubheaderTextBlockStyle}" />
             <TextBox PlaceholderText="username" Margin="0,0,0,15" />
@@ -35,7 +35,11 @@
             <TextBlock Text="Password" Style="{ThemeResource SubheaderTextBlockStyle}" />
             <PasswordBox PlaceholderText="password" Margin="0,0,0,15" />
 
-            <Button Content="Sign Up/Sign In" />
+            <TextBlock Text="Email" Style="{ThemeResource SubheaderTextBlockStyle}" />
+            <TextBlock Text="Used only to verify reseting your account password." Style="{ThemeResource BodyTextBlockStyle}" />
+            <TextBox PlaceholderText="email" Margin="0,0,0,15" />
+
+            <Button Content="Register/Sign In" />
         </StackPanel>
     </Grid>
 </Page>

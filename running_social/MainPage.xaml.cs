@@ -45,31 +45,33 @@ namespace running_social
             // this event is handled for you.
         }
 
-        private void AppBarButton_Click_Plan_Run(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(PlanRunPage));
-        }
-
-        private void AppBarButton_Click_Run_Now(object sender, RoutedEventArgs e)
-        {
-            Frame.Navigate(typeof(CurrentRunPage));
-        }
-
-        private void AppBarButton_Click_Search(object sender, RoutedEventArgs e)
-        {
-            // TODO
-        }
-
         private void AppBarButton_Click_Settings(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SettingsPage));
         }
+
         private void AppBarButton_Click_Change_Account(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(SignupPage));
         }
 
-        private void AppBarButton_Click_Friends_List(object sender, RoutedEventArgs e)
+        private void HomeButton_Click_Plan_Run(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(PlanRunPage));
+        }
+
+        private void HomeButton_Click_Run_Now(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(CurrentRunPage));
+        }
+
+        private void HomeButton_Click_My_Recent_Runs(object sender, RoutedEventArgs e)
+        {
+            // TODO: open personal profile page
+            Frame.Navigate(typeof(UserProfile));
+        }
+
+        private void HomeButton_Click_Friends_List(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(FriendsPage));
         }

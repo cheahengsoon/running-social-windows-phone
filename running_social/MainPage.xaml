@@ -9,25 +9,67 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.BottomAppBar>
         <CommandBar x:Name="CommandBarMain">
-            <AppBarButton Icon="Add" Label="plan run" Click="AppBarButton_Click_Plan_Run"/>
-            <AppBarButton Icon="Clock" Label="run now" Click="AppBarButton_Click_Run_Now"/>
-            <AppBarButton Icon="Find" Label="search" Click="AppBarButton_Click_Search" />
-            
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Label="friends list" Click="AppBarButton_Click_Friends_List" />
-                <AppBarButton Label="settings" Click="AppBarButton_Click_Settings" />
-                <AppBarButton Label="change account" Click="AppBarButton_Click_Change_Account" />
-            </CommandBar.SecondaryCommands>
+            <AppBarButton Icon="Contact" Label="log in" Click="AppBarButton_Click_Change_Account"/>
+            <AppBarButton Icon="Setting" Label="settings" Click="AppBarButton_Click_Settings"/>
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Pivot Title="Running Social">
-        <PivotItem Header="Upcoming" FontSize="48">
+    <Pivot x:Name="MainPagePivot" Title="Running Social">
+        <PivotItem Header="Home">
+            <StackPanel>
+                <Button HorizontalAlignment="Stretch" Height="93" Background="#FF01B800" BorderBrush="Transparent" Margin="0,0,0,-10" Click="HomeButton_Click_Plan_Run">
+                    <TextBlock Text="Plan Run" Foreground="White" Margin="-173,43,0,0" />
+                </Button>
+                <Button HorizontalAlignment="Stretch" Height="93" Background="#FF2630C6" BorderBrush="Transparent" Margin="0,0,0,-10" Click="HomeButton_Click_Run_Now">
+                    <TextBlock Text="Run Now" Foreground="White" Margin="-173,43,0,0" />
+                </Button>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,3,0" Height="93" BorderBrush="Transparent" Click="HomeButton_Click_My_Recent_Runs">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="LightGray" Offset="0.719"/>
+                                <GradientStop Color="White"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <TextBlock Text="My Recent Runs" Foreground="Green" Margin="-33,43,0,0" />
+                    </Button>
+                    <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="3,0,0,0" Height="93" BorderBrush="Transparent" Click="HomeButton_Click_Friends_List">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="LightGray" Offset="0.719"/>
+                                <GradientStop Color="White"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <TextBlock Text="Friends" Foreground="Blue" Margin="-81,43,0,0" />
+                    </Button>
+                </Grid>
+            </StackPanel>
         </PivotItem>
 
-        <PivotItem Header="Recent" FontSize="48">
+        <PivotItem Header="Upcoming">
+            <ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                        <TextBlock Text="No upcoming runs" Style="{ThemeResource BodyTextBlockStyle}" />
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="1" Text="Recent" Style="{ThemeResource HeaderTextBlockStyle}" />
+                    <StackPanel Grid.Row="2" Margin="0,28,0,0">
+                        <TextBlock Text="No recent runs" Style="{ThemeResource BodyTextBlockStyle}" />
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
         </PivotItem>
     </Pivot>
-    
-    
+
+
 </Page>

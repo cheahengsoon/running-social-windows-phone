@@ -10,6 +10,7 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Icon="Home" Label="home" Click="AppBarButton_Click_Home" />
+            <AppBarButton Icon="Find" Label="search" Click="AppBarButton_Click_Search" />
         </CommandBar>
     </Page.BottomAppBar>
 
