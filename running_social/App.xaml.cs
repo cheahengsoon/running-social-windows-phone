@@ -91,9 +91,20 @@ namespace running_social
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+                if (running_social.Resources.UserAccount.GetPrimaryAccount() == null)
                 {
-                    throw new Exception("Failed to create initial page");
+                    // TODO: navigate to the signup page
+                    if (!rootFrame.Navigate(typeof (MainPage), e.Arguments))
+                    {
+                        throw new Exception("Failed to create initial page");
+                    }
+                }
+                else
+                {
+                    if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
+                    {
+                        throw new Exception("Failed to create initial page");
+                    }
                 }
             }
 

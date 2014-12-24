@@ -1,4 +1,5 @@
 ﻿using running_social.Common;
+using running_social.Resources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -84,6 +85,7 @@ namespace running_social
         /// session.  The state will be null the first time a page is visited.</param>
         private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
+            ScreenNameEdit.Visibility = Visibility.Collapsed;
         }
 
         /// <summary>
@@ -133,6 +135,31 @@ namespace running_social
         private void AppBarButton_View_Profile(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(UserProfile));
+        }
+
+        private void Button_Click_Edit_Screen_Name(object sender, RoutedEventArgs e)
+        {
+            ScreenNameView.Visibility = Visibility.Collapsed;
+            ScreenNameEdit.Visibility = Visibility.Visible;
+            if (!UIHelper.ScrollToElement(ProfileScrollViewer, ScreenNameEdit))
+            {
+                UIHelper.ScrollToElement(ProfileScrollViewer, ScreenNameView);
+            }
+        }
+
+        private void Button_Click_Save_Screen_Name(object sender, RoutedEventArgs e)
+        {
+            ScreenNameView.Visibility = Visibility.Visible;
+            ScreenNameEdit.Visibility = Visibility.Collapsed;
+            // TODO: save screen name to profile
+            UIHelper.ScrollToElement(ProfileScrollViewer, ScreenNameView);
+        }
+
+        private void Button_Click_Cancel_Screen_Name(object sender, RoutedEventArgs e)
+        {
+            ScreenNameView.Visibility = Visibility.Visible;
+            ScreenNameEdit.Visibility = Visibility.Collapsed;
+            UIHelper.ScrollToElement(ProfileScrollViewer, ScreenNameEdit);
         }
     }
 }

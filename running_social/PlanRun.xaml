@@ -45,14 +45,15 @@
                     <ComboBoxItem Content="10 min" />
                     <ComboBoxItem Content="15 min" />
                     <ComboBoxItem Content="20 min" />
-                    <ComboBoxItem Content="25 min" />
                     <ComboBoxItem Content="30 min" />
-                    <ComboBoxItem Content="35 min" />
                     <ComboBoxItem Content="40 min" />
-                    <ComboBoxItem Content="45 min" />
                     <ComboBoxItem Content="50 min" />
-                    <ComboBoxItem Content="55 min" />
-                    <ComboBoxItem Content="60 min" />
+                    <ComboBoxItem Content="1 hour" />
+                    <ComboBoxItem Content="1 1/2 hours" />
+                    <ComboBoxItem Content="2 hours" />
+                    <ComboBoxItem Content="2 1/2 hours" />
+                    <ComboBoxItem Content="3 hours" />
+                    <ComboBoxItem Content="5 hours" />
                 </ComboBox>
                 
                 <TextBlock Text="Location" Style="{ThemeResource SubheaderTextBlockStyle}" />

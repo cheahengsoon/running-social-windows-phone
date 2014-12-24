@@ -96,6 +96,9 @@
       <DependentUpon>PlanRun.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resources\Geocoordinates.cs" />
+    <Compile Include="Resources\Run.cs" />
+    <Compile Include="Resources\UIHelper.cs" />
+    <Compile Include="Resources\UserAccount.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
