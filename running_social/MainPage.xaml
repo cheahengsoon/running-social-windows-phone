@@ -20,33 +20,18 @@
                 <Button HorizontalAlignment="Stretch" Height="93" Background="#FF01B800" BorderBrush="Transparent" Margin="0,0,0,-10" Click="HomeButton_Click_Plan_Run">
                     <TextBlock Text="Plan Run" Foreground="White" Margin="-173,43,0,0" />
                 </Button>
-                <Button HorizontalAlignment="Stretch" Height="93" Background="#FF2630C6" BorderBrush="Transparent" Margin="0,0,0,-10" Click="HomeButton_Click_Run_Now">
-                    <TextBlock Text="Run Now" Foreground="White" Margin="-173,43,0,0" />
+                <Button HorizontalAlignment="Stretch" Height="93" Background="#FF2630C6" BorderBrush="Transparent" Margin="0,0,0,-10" Click="HomeButton_Click_Friends_List">
+                    <TextBlock Text="Friends" Foreground="White" Margin="-173,43,0,0" />
                 </Button>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,0,3,0" Height="93" BorderBrush="Transparent" Click="HomeButton_Click_My_Recent_Runs">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="LightGray" Offset="0.719"/>
-                                <GradientStop Color="White"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                        <TextBlock Text="My Recent Runs" Foreground="Green" Margin="-33,43,0,0" />
-                    </Button>
-                    <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="3,0,0,0" Height="93" BorderBrush="Transparent" Click="HomeButton_Click_Friends_List">
-                        <Button.Background>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="LightGray" Offset="0.719"/>
-                                <GradientStop Color="White"/>
-                            </LinearGradientBrush>
-                        </Button.Background>
-                        <TextBlock Text="Friends" Foreground="Blue" Margin="-81,43,0,0" />
-                    </Button>
-                </Grid>
+                <Button Grid.Column="0" HorizontalAlignment="Stretch" Height="93" BorderBrush="Transparent" Click="HomeButton_Click_My_Recent_Runs">
+                    <Button.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="LightGray" Offset="0.719"/>
+                            <GradientStop Color="White"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                    <TextBlock Text="My Recent Runs" Foreground="Green" Margin="-173,43,0,0" />
+                </Button>
             </StackPanel>
         </PivotItem>
 

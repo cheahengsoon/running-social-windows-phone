@@ -14,27 +14,23 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Grid x:Name="LayoutRoot">
-
-        <Grid.ChildrenTransitions>
-            <TransitionCollection>
-                <EntranceThemeTransition/>
-            </TransitionCollection>
-        </Grid.ChildrenTransitions>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Pivot x:Name="LayoutRoot" Margin="10,0,10,0">
 
         <!-- Title Panel -->
-        <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock Text="Friends List" Margin="0,-6.5,0,26.5" Style="{ThemeResource HeaderTextBlockStyle}" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
-        </StackPanel>
-
-        <!--TODO: Content should be placed within the following grid-->
-        <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
-        </Grid>
-    </Grid>
+        <PivotItem Header="Friends" >
+            <TextBlock Text="List of friends goes here" Style="{ThemeResource BodyTextBlockStyle}" />
+        </PivotItem>
+        
+        <PivotItem Header="Friend Requests">
+            <TextBlock Text="List of people that have applied to be your friend or friends that have not yet responded to you go here." Style="{ThemeResource BodyTextBlockStyle}" />
+        </PivotItem>
+        
+        <PivotItem Header="Connect">
+            <StackPanel>
+                <TextBox PlaceholderText="Search For Username" HorizontalAlignment="Stretch" />
+                <Button Content="TODO: Connect On Facebook" />
+                <Button Content="TODO: Connect On Google+" />
+            </StackPanel>
+        </PivotItem>
+    </Pivot>
 </Page>

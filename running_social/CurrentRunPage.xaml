@@ -20,7 +20,7 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <Pivot x:Name="LayoutRoot" Title="Current Run">
+    <Pivot x:Name="LayoutRoot" Title="Current Run" Margin="10,0,10,0">
 
         <PivotItem Header="tracking">
             <Grid>
