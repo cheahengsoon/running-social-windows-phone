@@ -28,6 +28,7 @@ namespace running_social.Resources
         /// </summary>
         private Boolean _isAuthorized;
         private ImageStream _picture;
+        private List<UserAccount> _friends;
 
         private static UserAccount _primaryUserAccount = null;
 

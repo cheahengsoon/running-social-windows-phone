@@ -173,11 +173,11 @@ namespace running_social
             Geocoordinates geolocator = Geocoordinates.GetGeolocator();
             if (_runStatus == Rstatus.Paused)
             {
-                geolocator.StartNewLocationsList();
+                geolocator.ResumeRun();
             }
             else // _runStatus == Rstatus.Stopped
             {
-                geolocator.StartNewLocationsSetList();
+                geolocator.StartNewRun();
             }
             geolocator.SubscribeToUpdates();
 
@@ -200,7 +200,7 @@ namespace running_social
                 return false;
             }
 
-            Geocoordinates.GetGeolocator().StopSubscription();
+            Geocoordinates.GetGeolocator().PauseRun();
 
             _runStatus = Rstatus.Paused;
             CollapseAll();
@@ -221,7 +221,7 @@ namespace running_social
                 return false;
             }
 
-            Geocoordinates.GetGeolocator().StopSubscription();
+            Geocoordinates.GetGeolocator().StopRun();
 
             _runStatus = Rstatus.Stopped;
             CollapseAll();

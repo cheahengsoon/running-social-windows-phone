@@ -16,17 +16,14 @@ namespace running_social.Resources
     /// </summary>
     class Geocoordinates
     {
-        private Geolocator _myGeolocator = new Geolocator();
         /// <summary>
-        /// List of sublists of locations points and times.
-        /// Each sublist represents a time period from when "play" was pushed until "pause" was pushed.
+        /// Contains all the static settings for the geolocator.
         /// </summary>
-        public List<List<Tuple<DateTime, Geopoint>>> LocationsSetsList =
-            new List<List<Tuple<DateTime, Geopoint>>>();
+        private Geolocator _myGeolocator = null;
         /// <summary>
-        /// Quick reference to the the current sublist of LocationsSetsList.
+        /// The current run to record geolocation info into.
         /// </summary>
-        public List<Tuple<DateTime, Geopoint>> LocationsList = null;
+        private Run _run = null;
         /// <summary>
         /// The singleton object.
         /// </summary>
@@ -34,7 +31,7 @@ namespace running_social.Resources
         /// <summary>
         /// The interval between calculating a new geolocation coordinate, in seconds.
         /// </summary>
-        public uint CoordinatesInterval = 5;
+        public uint DefaultCoordinatesInterval = 5;
         /// <summary>
         /// To remember if this object has already been subscribed to updates.
         /// </summary>
@@ -52,9 +49,12 @@ namespace running_social.Resources
         {
             try
             {
-                _myGeolocator.DesiredAccuracyInMeters = 5;
-                _myGeolocator.MovementThreshold = 5;
-                _myGeolocator.ReportInterval = CoordinatesInterval*1000;
+                _myGeolocator = new Geolocator
+                {
+                    DesiredAccuracyInMeters = 5,
+                    MovementThreshold = 5,
+                    ReportInterval = DefaultCoordinatesInterval*1000
+                };
             }
             catch (Exception ex)
             {
@@ -63,7 +63,7 @@ namespace running_social.Resources
             }
         }
 
-        public async void StopSubscription()
+        public async void PauseRun()
         {
             if (_subscription == null)
             {
@@ -71,6 +71,11 @@ namespace running_social.Resources
             }
             _myGeolocator.PositionChanged -= _subscription;
             _subscription = null;
+        }
+
+        public async void StopRun()
+        {
+            PauseRun();
         }
 
         public async void SubscribeToUpdates()
@@ -112,9 +117,16 @@ namespace running_social.Resources
         /// <param name="args">Arguments created by the geolocator, including the geopoint</param>
         public static void OnLocationChanged(Geolocator loc, PositionChangedEventArgs args)
         {
-            _instance.LocationsList.Add(
-                new Tuple<DateTime, Geopoint>( new DateTime(), args.Position.Coordinate.Point ));
-            Debug.WriteLine(_instance.LocationsList.Count);
+            // check that the singleton has been created
+            if (_instance == null)
+            {
+                GetGeolocator();
+            } else {
+                // add a new geocoordinate to the locations list for this run
+                _instance._run.LocationsList.Add(
+                    new Tuple<DateTime, Geopoint>(new DateTime(), args.Position.Coordinate.Point));
+                Debug.WriteLine(_instance._run.LocationsList.Count);
+            }
         }
 
         /// <summary>
@@ -123,11 +135,7 @@ namespace running_social.Resources
         /// <returns>The Geocoordinates singleton object.</returns>
         public static Geocoordinates GetGeolocator()
         {
-            if (_instance == null)
-            {
-                _instance = new Geocoordinates();
-            }
-            return _instance;
+            return _instance ?? (_instance = new Geocoordinates());
         }
 
         /// <summary>
@@ -135,16 +143,16 @@ namespace running_social.Resources
         /// </summary>
         /// <param name="dt">The datetime to get an approximate answer from</param>
         /// <returns>The closest datetime/geopoint pair.</returns>
-        public Tuple<DateTime, Geopoint> GetCoordinatePair(DateTime dt)
+        public async Task<Tuple<DateTime, Geopoint>> GetCoordinatePair(DateTime dt)
         {
-            if (LocationsList.Count == 0)
+            if (_run == null || _run.LocationsList.Count == 0)
             {
-                CalculateSingeCoordinate();
+                return await CalculateSingeCoordinate();
             }
 
-            Tuple<DateTime, Geopoint> closestPair = LocationsList[0];
+            Tuple<DateTime, Geopoint> closestPair = _run.LocationsList[0];
             int closestDiff = Math.Abs((int) (closestPair.Item1 - dt).TotalSeconds);
-            foreach (var pair in LocationsList)
+            foreach (var pair in _run.LocationsList)
             {
                 int diff = Math.Abs( (int)(pair.Item1 - dt).TotalSeconds );
                 if (diff < closestDiff)
@@ -159,35 +167,44 @@ namespace running_social.Resources
         /// <summary>
         /// Used to start a new list every time "play" is pushed after "pause".
         /// </summary>
-        public void StartNewLocationsList()
+        public void ResumeRun()
         {
-            LocationsSetsList.Add(new List<Tuple<DateTime, Geopoint>>());
-            LocationsList = LocationsSetsList[LocationsSetsList.Count - 1];
+            if (_run != null)
+            {
+                _run.StartNewLocationsList();
+            } else {
+                throw new InvalidOperationException(
+                    "No run selected when trying to start a new locations list.");
+            }
         }
 
         /// <summary>
-        /// Used to start a new set of lists every time "play" is pushed after "stop"
+        /// Used to start a new set of lists/runs every time "play" is pushed after "stop"
         /// or the first time "play" is pushed.
         /// </summary>
-        public void StartNewLocationsSetList()
+        public void StartNewRun()
         {
-            LocationsSetsList = new List<List<Tuple<DateTime, Geopoint>>>();
-            StartNewLocationsList();
+            _instance._run = new Run();
         }
 
         /// <summary>
         /// Calculate the next datetime/geopoint pair and add it to locationsList
         /// From http://msdn.microsoft.com/en-us/library/windows/apps/jj244363(v=vs.105).aspx
         /// </summary>
-        private async void CalculateSingeCoordinate()
+        private async Task<Tuple<DateTime,Geopoint>> CalculateSingeCoordinate()
         {
+            Tuple<DateTime, Geopoint> retval = null;
+
             // Get the phone's current location.
             string exceptionMsg = "";
             try
             {
                 Geoposition myGeoPosition = await _myGeolocator.GetGeopositionAsync(TimeSpan.FromMinutes(1), TimeSpan.FromSeconds(10));
-                LocationsList.Add(
-                    new Tuple<DateTime, Geopoint>(new DateTime(), myGeoPosition.Coordinate.Point));
+                retval = new Tuple<DateTime, Geopoint>(new DateTime(), myGeoPosition.Coordinate.Point);
+                if (_run != null)
+                {
+                    _run.LocationsList.Add(retval);
+                }
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -203,6 +220,8 @@ namespace running_social.Resources
             {
                 await new MessageDialog(exceptionMsg).ShowAsync();
             }
+
+            return retval;
         }
     }
 }
