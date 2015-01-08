@@ -30,16 +30,44 @@
         <!-- The Registration Page -->
         <StackPanel Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
             <TextBlock Text="Username" Style="{ThemeResource SubheaderTextBlockStyle}" />
-            <TextBox PlaceholderText="username" Margin="0,0,0,15" />
+            <TextBox
+                x:Name="UsernameBox"
+                PlaceholderText="username"
+                Margin="0,0,0,15"
+                TextChanged="TextChanged_VerifyFields" />
 
             <TextBlock Text="Password" Style="{ThemeResource SubheaderTextBlockStyle}" />
-            <PasswordBox PlaceholderText="password" Margin="0,0,0,15" />
+            <PasswordBox
+                x:Name="PasswordBox"
+                PlaceholderText="password"
+                Margin="0,0,0,15"
+                PasswordChanged="PasswordChanged_VerifyFields" />
+            <TextBox
+                x:Name="PasswordBox2"
+                PlaceholderText="password"
+                Margin="0,0,0,15"
+                Visibility="Collapsed"
+                TextChanged="PasswordChanged_VerifyFields" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="27" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <CheckBox Grid.Column="0" Margin="0,-15,193.667,0" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Unchecked="ShowPassword_Checked" Checked="ShowPassword_Checked" />
+                <TextBlock Grid.Column="1" Style="{ThemeResource BodyTextBlockStyle}" Text="Show Password" Margin="15,0,0,0" />
+            </Grid>
 
             <TextBlock Text="Email" Style="{ThemeResource SubheaderTextBlockStyle}" />
             <TextBlock Text="Used only to verify reseting your account password." Style="{ThemeResource BodyTextBlockStyle}" />
-            <TextBox PlaceholderText="email" Margin="0,0,0,15" />
+            <TextBox
+                x:Name="EmailBox"
+                PlaceholderText="email"
+                Margin="0,0,0,15"
+                TextChanged="TextChanged_VerifyFields" />
 
-            <Button Content="Register/Sign In" />
+            <Button x:Name="RegisterButton" Content="Register/Sign In" Visibility="Collapsed" />
+            
+            <TextBlock x:Name="ErrorBlock" Text="username must not be empty" Style="{ThemeResource BodyTextBlockStyle}" Margin="0,10,0,0" Foreground="#FFDD2020" Visibility="Collapsed" />
         </StackPanel>
     </Grid>
 </Page>

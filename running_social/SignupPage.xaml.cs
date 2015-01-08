@@ -1,9 +1,11 @@
 ﻿using running_social.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text.RegularExpressions;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
@@ -107,5 +109,107 @@ namespace running_social
         }
 
         #endregion
+
+        /// <summary>
+        /// Checks the status of the signup fields with VerifyFields() and,
+        /// if verified, shows (or hides) the signup button.
+        /// </summary>
+        /// <param name="sender">One of UsernameBox, PasswordBox, EmailBox</param>
+        /// <param name="e">action event args</param>
+        private void TextChanged_VerifyFields(object sender, TextChangedEventArgs e)
+        {
+            if (VerifyFields(sender))
+            {
+                RegisterButton.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                RegisterButton.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        /// <summary>
+        /// Copies text between PasswordBox and PasswordBox2, then calls
+        /// TextChanged_VerifyFields().
+        /// </summary>
+        /// <param name="sender">Either PasswordBox or PasswordBox2</param>
+        /// <param name="e">action event args</param>
+        private void PasswordChanged_VerifyFields(object sender, RoutedEventArgs e)
+        {
+            if (PasswordBox.Equals(sender))
+            {
+                PasswordBox2.Text = PasswordBox.Password;
+            } else {
+                PasswordBox.Password = PasswordBox2.Text;
+            }
+            TextChanged_VerifyFields(PasswordBox, null);
+        }
+
+        /// <summary>
+        /// Verifies that all of the fields on the signup page are correctly filled out.
+        /// The name and password must not be empty, and the email must match the pattern:
+        ///     .+@.+\..+ (I realize there are better email filters but don't care because
+        ///     email is too complicated to easily account for everything, and nobody
+        ///     seems to agree on what is valid).
+        /// </summary>
+        /// <param name="sender">One of UsernameBox, PasswordBox, EmailBox</param>
+        /// <returns>true if everything is valid to send to server, false otherwise</returns>
+        private bool VerifyFields(object sender)
+        {
+            string username = UsernameBox.Text;
+            string password = PasswordBox.Password;
+            string email = EmailBox.Text;
+            Regex emailRegex = null;
+
+            ErrorBlock.Visibility = Visibility.Collapsed;
+            if (username.Length == 0 && sender.Equals(UsernameBox))
+            {
+                ErrorBlock.Text = "error: username must not be empty";
+                ErrorBlock.Visibility = Visibility.Visible;
+                return false;
+            }
+            if (password.Length == 0 && sender.Equals(PasswordBox))
+            {
+                ErrorBlock.Text = "error: password must not be empty";
+                ErrorBlock.Visibility = Visibility.Visible;
+                return false;
+            }
+            if (email.Length == 0 && sender.Equals(EmailBox))
+            {
+                ErrorBlock.Text = "error: email must not be empty";
+                ErrorBlock.Visibility = Visibility.Visible;
+                return false;
+            }
+            emailRegex = new Regex(".+@.+\\..+");
+            if (username.Length == 0 ||
+                password.Length == 0 ||
+                !emailRegex.IsMatch(email))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Monitors the checkbox that enables or disables the plain text password.
+        /// When checked, the TextBox is visible. When not checked, the PasswordBox
+        /// is visible.
+        /// </summary>
+        /// <param name="sender">The CheckBox</param>
+        /// <param name="e">action event args</param>
+        private void ShowPassword_Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox cb = (CheckBox) sender;
+            if (cb.IsChecked == true)
+            {
+                PasswordBox.Visibility = Visibility.Collapsed;
+                PasswordBox2.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                PasswordBox2.Visibility = Visibility.Collapsed;
+                PasswordBox.Visibility = Visibility.Visible;
+            }
+        }
     }
 }

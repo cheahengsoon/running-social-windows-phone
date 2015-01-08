@@ -94,7 +94,7 @@ namespace running_social
                 if (running_social.Resources.UserAccount.GetPrimaryAccount() == null)
                 {
                     // TODO: navigate to the signup page
-                    if (!rootFrame.Navigate(typeof (MainPage), e.Arguments))
+                    if (!rootFrame.Navigate(typeof (SignupPage), e.Arguments))
                     {
                         throw new Exception("Failed to create initial page");
                     }

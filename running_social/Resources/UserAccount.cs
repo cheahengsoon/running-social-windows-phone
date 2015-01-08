@@ -100,7 +100,7 @@ namespace running_social.Resources
                 return false;
             }
 
-            bool authorized = false;
+            bool authorized = true;
             // TODO: authorize with server
             if (!authorized)
             {
